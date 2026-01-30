@@ -123,6 +123,7 @@ set -eu
         }
         
     clientinstall(){
+        echo "the headcrab latches on the steam process.."
         if steamoscheck; then
             echo "Steamos Detected"
             echo "Headcrab Bootstrapping SLSsteam.."
@@ -189,6 +190,7 @@ set -eu
             }
             
     overideupdate(){
+        echo "the headcrab latches on the steam process.."
         if steamoscheck; then
             echo "Steamos Detected"
             createsteamcfg
@@ -215,7 +217,6 @@ set -eu
     fi
         nuketheclient
         CheckHeadcrabCompatibility
-        echo "the headcrab latches on the steam process.."
         conditioncheck
         }
 
