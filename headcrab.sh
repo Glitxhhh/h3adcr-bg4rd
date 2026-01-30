@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -eu
 
+    #Headcrab Compatibile Client Version
+    HeadcrabCompatibleClientVer=1769025840
+    
     #paths
     SCRIPT_DIR="$(dirname "$(realpath "$0")")"
     SteamInstallDir=$HOME/.steam/steam
@@ -18,10 +21,45 @@ set -eu
     dgsc="https://github.com/Deadboy666/h3adcr-b/raw/refs/heads/testing/dgsc"
     dlm="https://github.com/Deadboy666/h3adcr-b/raw/refs/heads/testing/dlm"
     Sources="https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/testing/sources.txt"
-
+    
+    
     steamoscheck(){
-    [ -f /etc/os-release ] && source /etc/os-release && [ "${ID:-}" = "steamos" ]
-    }
+        [ -f /etc/os-release ] && source /etc/os-release && [ "${ID:-}" = "steamos" ]
+        }
+    
+    flatpakcheck(){
+        [ -d "$FlatpakSteamInstallDir" ]
+        }
+        
+    CheckClientInfo(){
+        wheresteamcfg
+        cd package/
+        if steamoscheck; then
+            echo "SteamClientType: Steamos"
+            versionnumber=$(grep '"version"' steam_client_steamdeck_stable_ubuntu12.manifest | awk -F'"' '{print $4}')
+        elif flatpakcheck; then
+            echo "SteamClientType: Flatpak"
+            versionnumber=$(grep '"version"' steam_client_ubuntu12.manifest | awk -F'"' '{print $4}')
+        else
+            echo "SteamClientType: Native"
+            versionnumber=$(grep '"version"' steam_client_ubuntu12.manifest | awk -F'"' '{print $4}')
+        fi
+            echo "SteamClientVersion: $versionnumber"
+            }
+    
+    CheckHeadcrabCompatibility(){
+        CheckClientInfo
+        if [[ "$versionnumber" == "$HeadcrabCompatibleClientVer" ]]; then
+            echo "ClientCompatCheck: SteamClientVersion Compatible"
+            echo "Headcrab_dgsc Will Be Skipped In The Install."
+            clientinstall
+        else
+            echo "ClientCompatCheck: SteamClientVersion Incompatible"
+            echo "Will Need To Fetch Compatible Version With Headcrab_dgsc"
+            clientdowngrade
+
+        fi
+            }
     
     DownloadClientManifest(){
         if steamoscheck; then
@@ -86,9 +124,22 @@ set -eu
         dlm
         }
         
+    clientinstall(){
+        if steamoscheck; then
+            echo "Steamos Detected"
+            echo "Headcrab Bootstrapping SLSsteam.."
+            createsteamcfg
+           export_sls wheresteam -clearbeta -textmode -exitsteam &> /dev/null
+        else
+            echo "Headcrab Bootstrapping SLSsteam.."
+            createsteamcfg
+            export_sls wheresteam -clearbeta -textmode -exitsteam &> /dev/null
+        fi
+            echo "Headcrab Injected SLSsteam."
+            }
+            
     clientdowngrade(){
         prepdowngrade
-        checkforsteamcfg
         }
         
     nuketheclient(){
@@ -141,10 +192,12 @@ set -eu
     overideupdate(){
         if steamoscheck; then
             echo "Steamos Detected"
+            createsteamcfg
             dgsc
             echo "Headcrab Connecting to The Updater.."
            export_sls wheresteam -textmode -forcesteamupdate -forcepackagedownload -overridepackageurl "$Headcrab_Downgrade_URL" -exitsteam &> /dev/null
         else
+            createsteamcfg
             dgsc
             echo "Headcrab Connecting to The Updater.."
             export_sls wheresteam -clearbeta -textmode -forcesteamupdate -forcepackagedownload -overridepackageurl "$Headcrab_Downgrade_URL" -exitsteam &> /dev/null
@@ -163,7 +216,7 @@ set -eu
         nuketheclient
         echo "the headcrab approaches.."
         echo "the headcrab latches on the steam process.."
-        overideupdate
+        CheckHeadcrabCompatibility
         conditioncheck
         }
 
@@ -308,14 +361,12 @@ patchflatpaksteam(){
         conditioncheck(){
             echo "Checking Conditions..."
             editconfig
-            createsteamcfg
-            patchsteam
             echo "HeadcrabStatus: Patched"
             }
 
     main(){
         backupconfig
-        clientdowngrade
+        checkforsteamcfg
         }
 
     main
