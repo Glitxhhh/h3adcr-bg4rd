@@ -31,18 +31,42 @@ set -eu
         [ -d "$FlatpakSteamInstallDir" ]
         }
         
+    SteamOSClientCheck(){
+        if [ -f "steam_client_steamdeck_stable_ubuntu12.manifest" ]; then
+            versionnumber=$(grep '"version"' steam_client_steamdeck_stable_ubuntu12.manifest | awk -F'"' '{print $4}')
+        else
+            versionnumber=$(grep '"version"' steam_client_steamdeck_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
+        fi
+            echo "SteamClientType: SteamOS"
+        }
+
+    FlatpakClientCheck(){
+        if [ -f "steam_client_ubuntu12.manifest" ]; then
+            versionnumber=$(grep '"version"' steam_client_ubuntu12.manifest | awk -F'"' '{print $4}')
+        else
+            versionnumber=$(grep '"version"' steam_client_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
+        fi
+            echo "SteamClientType: Flatpak"
+        }
+
+    NativeClientCheck(){
+        if [ -f "steam_client_ubuntu12.manifest" ]; then
+            versionnumber=$(grep '"version"' steam_client_ubuntu12.manifest | awk -F'"' '{print $4}')
+        else
+            versionnumber=$(grep '"version"' steam_client_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
+        fi
+            echo "SteamClientType: Native"
+        }
+
     CheckClientInfo(){
         wheresteamcfg
         cd package/
         if steamoscheck; then
-            echo "SteamClientType: Steamos"
-            versionnumber=$(grep '"version"' steam_client_steamdeck_stable_ubuntu12.manifest | awk -F'"' '{print $4}')
+            SteamOSClientCheck
         elif flatpakcheck; then
-            echo "SteamClientType: Flatpak"
-            versionnumber=$(grep '"version"' steam_client_ubuntu12.manifest | awk -F'"' '{print $4}')
+            FlatpakClientCheck
         else
-            echo "SteamClientType: Native"
-            versionnumber=$(grep '"version"' steam_client_ubuntu12.manifest | awk -F'"' '{print $4}')
+            NativeClientCheck
         fi
             echo "SteamClientVersion: $versionnumber"
             }
