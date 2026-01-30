@@ -134,9 +134,9 @@ set -eu
             createsteamcfg
             export_sls wheresteam -clearbeta steam://exit &> /dev/null
         fi
-            echo "Headcrab Injected SLSsteam."
+            echo "" &> /dev/null
             }
-            
+        
     clientdowngrade(){
         prepdowngrade
         overideupdate
