@@ -51,13 +51,10 @@ set -eu
         CheckClientInfo
         if [[ "$versionnumber" == "$HeadcrabCompatibleClientVer" ]]; then
             echo "ClientCompatCheck: SteamClientVersion Compatible"
-            echo "Headcrab_dgsc Will Be Skipped In The Install."
             clientinstall
         else
             echo "ClientCompatCheck: SteamClientVersion Incompatible"
-            echo "Will Need To Fetch Compatible Version With Headcrab_dgsc"
             clientdowngrade
-
         fi
             }
     
@@ -316,7 +313,7 @@ BootStrapperInhibitAll=enable
 BootStrapperForceSelfUpdate=disable
 EOF
     fi
-        echo "BlockedClientUpdates: Enabled"
+        echo "" &> /dev/null
     }
 
     patchsteam(){
@@ -361,6 +358,7 @@ patchflatpaksteam(){
 
         conditioncheck(){
             echo "Checking Conditions..."
+            echo "BlockedClientUpdates: Enabled"
             editconfig
             echo "HeadcrabStatus: Patched"
             }
