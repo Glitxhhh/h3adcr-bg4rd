@@ -129,11 +129,11 @@ set -eu
             echo "Steamos Detected"
             echo "Headcrab Bootstrapping SLSsteam.."
             createsteamcfg
-           export_sls wheresteam -clearbeta -exitsteam &> /dev/null
+           export_sls wheresteam -clearbeta steam://exit
         else
             echo "Headcrab Bootstrapping SLSsteam.."
             createsteamcfg
-            export_sls wheresteam -clearbeta -exitsteam &> /dev/null
+            export_sls wheresteam -clearbeta steam://exit
         fi
             echo "Headcrab Injected SLSsteam."
             }
