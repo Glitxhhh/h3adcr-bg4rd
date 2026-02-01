@@ -313,7 +313,7 @@ set -eu
 
     extractSLSsteam(){
         downloadSLSsteam
-         7z x $SCRIPT_DIR/SLSsteam-Any.7z -aoa &> /dev/null
+         7z x $SCRIPT_DIR/SLSsteam-Any.7z -aoa > /dev/null
          rm -rf tools
          rm -rf res
          rm setup.sh
