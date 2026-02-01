@@ -6,6 +6,7 @@ set -eu
     
     #paths
     SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+	ApplicationDirectory=$HOME/.local/share/applications
     SteamInstallDir=$HOME/.steam/steam
     FlatpakSteamInstallDir=$HOME/.var/app/com.valvesoftware.Steam/.steam/steam
     FlatpakSLSsteamInstallDir=$HOME/.var/app/com.valvesoftware.Steam/.local/share/SLSsteam
@@ -22,6 +23,8 @@ set -eu
     dgsc="https://github.com/Deadboy666/h3adcr-b/raw/refs/heads/testing/dgsc"
     dlm="https://github.com/Deadboy666/h3adcr-b/raw/refs/heads/testing/dlm"
     Sources="https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/testing/sources.txt"
+	Headcrab_Updater="https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/testing/headcrab.desktop"
+	
 
     debiancheck(){
         [ -f /etc/os-release ] && source /etc/os-release && [[ "${ID:-}" == "debian" || "${ID:-}" == "ubuntu" || "${ID_LIKE}" =~ "debian" || "${ID_LIKE}" =~ "ubuntu" ]]
@@ -34,6 +37,15 @@ set -eu
     flatpakcheck(){
         [ -d "$FlatpakSteamInstallDir" ]
         }
+		
+	SetupHeadcrab_Updater(){
+	cd $ApplicationDirectory/
+	wget "$Headcrab_Updater" &> /dev/null
+	chmod +x headcrab.desktop
+	update-desktop-database $ApplicationDirectory
+	echo "Headcrab Updater Now In Your Applications Menu"
+	echo "Can Open Up Headcrab Updater To Update To Latest Version."
+	}
         
     SteamOSClientCheck(){
         if [ -f "steam_client_steamdeck_stable_ubuntu12.manifest" ]; then
@@ -436,6 +448,7 @@ patchflatpaksteam(){
 
     main(){
         installdebiandeps
+		SetupHeadcrab_Updater
         backupconfig
         checkforsteamcfg
         }
