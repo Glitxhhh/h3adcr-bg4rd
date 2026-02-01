@@ -422,6 +422,7 @@ patchflatpaksteam(){
             mv steam.sh steam.sh.bak
         	wget "$Steamos_Native_LaunchScript" &> /dev/null
 			chmod +x steam.sh
+		fi
             echo "SLSSteamInstallType: Local"
         }
 
