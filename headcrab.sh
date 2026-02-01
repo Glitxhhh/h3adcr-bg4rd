@@ -211,7 +211,7 @@ set -eu
         }
         
     nuketheclient(){
-                killall steam | true
+                kill steam | true
             }
         
     wheresteam(){
@@ -434,7 +434,7 @@ patchflatpaksteam(){
             }
 
     main(){
-        installdebiandeps
+        #installdebiandeps
         backupconfig
         checkforsteamcfg
         }
