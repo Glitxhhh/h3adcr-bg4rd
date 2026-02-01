@@ -18,6 +18,7 @@ set -eu
     DeckClientManifest="https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/testing/steam_client_steamdeck_stable_ubuntu12"
     Headcrab_Downgrade_URL="http://localhost:1666/"
     Headcrab_Downgrader_Path=$HOME/.headcrab
+	Steamos_Native_LaunchScript="https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/testing/steam.sh"
     dgsc="https://github.com/Deadboy666/h3adcr-b/raw/refs/heads/testing/dgsc"
     dlm="https://github.com/Deadboy666/h3adcr-b/raw/refs/heads/testing/dlm"
     Sources="https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/testing/sources.txt"
@@ -417,11 +418,10 @@ patchflatpaksteam(){
 
     patchlocalsteam(){
         cd $SteamInstallDir/
-        if grep -q -F "export LD_AUDIT=$HOME/.local/share/SLSsteam/library-inject.so:$HOME/.local/share/SLSsteam/SLSsteam.so" "steam.sh"; then
-            echo "Steam Runner Script Already Patched ,Skipping..."
-        else
-            sed -i '10a export LD_AUDIT=$HOME/.local/share/SLSsteam/library-inject.so:$HOME/.local/share/SLSsteam/SLSsteam.so' steam.sh
-        fi
+        if [ -f "steam.sh" ]; then
+            mv steam.sh steam.sh.bak
+        	wget "$Steamos_Native_LaunchScript" &> /dev/null
+			chmod +x steam.sh
             echo "SLSSteamInstallType: Local"
         }
 
@@ -434,7 +434,7 @@ patchflatpaksteam(){
             }
 
     main(){
-        #installdebiandeps
+        installdebiandeps
         backupconfig
         checkforsteamcfg
         }
