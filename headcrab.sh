@@ -212,7 +212,7 @@ set -eu
         }
         
     nuketheclient(){
-                kill steam | true
+                killall steam | true
             }
         
     wheresteam(){
