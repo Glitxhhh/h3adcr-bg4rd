@@ -23,7 +23,7 @@ set -eu
     Sources="https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/testing/sources.txt"
 
     debiancheck(){
-        [ -f /etc/os-release ] && source /etc/os-release && [[ "$ID" == "debian" || "$ID" == "ubuntu" || "$ID_LIKE" =~ "debian" || "$ID_LIKE" =~ "ubuntu" ]]
+        [ -f /etc/os-release ] && source /etc/os-release && [[ "${ID:-}" == "debian" || "${ID:-}" == "ubuntu" || "${ID_LIKE}" =~ "debian" || "${ID_LIKE}" =~ "ubuntu" ]]
         }   
 
     steamoscheck(){
