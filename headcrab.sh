@@ -15,6 +15,7 @@ set -eu
     SLSsteamConfigDir=$HOME/.config/SLSsteam
     InstallDir=$SCRIPT_DIR/bin
     Headcrab_Downgrader_Path=$HOME/.headcrab
+	
 	#URL'S
     Headcrab_Downgrade_URL="http://localhost:1666/"
 	LinuxClientManifest="https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/testing/steam_client_ubuntu12"
