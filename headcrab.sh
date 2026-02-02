@@ -31,7 +31,7 @@ set -eu
         }
 
     debiancheck(){
-        [ -f /etc/os-release ] && source /etc/os-release && [[ "${ID:-}" == "debian" || "${ID:-}" == "ubuntu" || "${ID_LIKE}" =~ "debian" || "${ID_LIKE}" =~ "ubuntu" ]]
+        [ -f /etc/os-release ] && source /etc/os-release && [[ "$ID" == "debian" || "$ID" == "ubuntu" || "$ID_LIKE" =~ "debian" || "$ID_LIKE" =~ "ubuntu" ]]
         }   
 
     steamoscheck(){
