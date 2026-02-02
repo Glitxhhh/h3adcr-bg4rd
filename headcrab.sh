@@ -149,13 +149,12 @@ set -eu
 
     removearchpkg(){
         if archcheck; then
-        for pkg in slssteam slssteam-git; do
-            if pacman -Qq "$pkg" >/dev/null 2>&1; then
-                echo "We need to convert your Arch SLSsteam installation to a local one."
-                echo "Uninstalling $pkg Arch package..."
-                sudo pacman -Rns --noconfirm "$pkg"
-            fi
-        done
+        installed_pkgs=$(pacman -Qq | grep -E '^slssteam(-git)?$' || true)
+        if [ -n "$installed_pkgs" ]; then
+            echo "We need to convert your Arch SLSsteam installation to a local one."
+            echo "Uninstalling Arch packages: $installed_pkgs"
+            sudo pacman -Rns --noconfirm $installed_pkgs
+        fi
         fi
     }
     
