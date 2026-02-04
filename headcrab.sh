@@ -26,16 +26,38 @@ set -eu
     Sources="https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/main/sources.txt"
 	Headcrab_Updater="https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/main/headcrab.desktop"
 	
+    read_os_release(){
+        local f
+        OS_ID=""
+        OS_ID_LIKE=""
+        for f in /etc/os-release /usr/lib/os-release; do
+            [ -r "$f" ] || continue
+            . "$f"
+            break
+        done
+        OS_ID=${ID:-}
+        OS_ID_LIKE=${ID_LIKE:-}
+    }
+
     archcheck(){
-        [ -f /etc/os-release ] && source /etc/os-release && [[ "$ID" == "arch" ]]
+        read_os_release
+        case " $OS_ID $OS_ID_LIKE " in
+            *" arch "*|*" cachyos "*) return 0 ;;
+        esac
+        return 1
         }
 
     debiancheck(){
-        [ -f /etc/os-release ] && source /etc/os-release && [[ "$ID" == "debian" || "$ID" == "ubuntu" ]]
+        read_os_release
+        case " $OS_ID $OS_ID_LIKE " in
+            *" debian "*|*" ubuntu "*) return 0 ;;
+        esac
+        return 1
         }   
 
     steamoscheck(){
-        [ -f /etc/os-release ] && source /etc/os-release && [ "${ID:-}" = "steamos" ]
+        read_os_release
+        [ "$OS_ID" = "steamos" ]
         }
     
     flatpakcheck(){
@@ -117,11 +139,12 @@ set -eu
         }
 
     preinstallchecks(){
-        installdebiandeps
-        removearchpkg
+        InstallDebianDeps
+        RemoveArchPkg
+        DisableSLSsteamPath
         }
 
-    installdebiandeps() {	    
+    InstallDebianDeps() {	    
 	    if debiancheck; then
 
 		if apt-cache search --names-only '^libcurl4t64$' | grep -q "libcurl4t64"; then
@@ -151,7 +174,7 @@ set -eu
         fi
 	    }
 
-    removearchpkg(){
+    RemoveArchPkg(){
         if archcheck; then
         installed_pkgs=$(pacman -Qq | grep -E '^slssteam(-git)?$' || true)
         if [ -n "$installed_pkgs" ]; then
@@ -160,6 +183,31 @@ set -eu
             echo "Uninstalling Arch packages: $installed_pkgs"
             sudo pacman -Rns --noconfirm $installed_pkgs
         fi
+        fi
+    }
+
+    DisableSLSsteamPath(){
+        local local_target="$SLSsteamInstallDir/path/steam"
+        local flatpak_target="$FlatpakSLSsteamInstallDir/path/steam"
+        local acted=0
+
+        if [ -e "$flatpak_target" ]; then
+            echo "Found: $flatpak_target"
+            echo "Renaming $flatpak_target -> ${flatpak_target}.bak"
+            mv -- "$flatpak_target" "${flatpak_target}.bak"
+            acted=1
+        fi
+
+        if [ -e "$local_target" ]; then
+            echo "Found: $local_target"
+            echo "Renaming $local_target -> ${local_target}.bak"
+            mv -- "$local_target" "${local_target}.bak"
+            acted=1
+        fi
+
+        if [ "$acted" -eq 0 ]; then
+            echo "Not present: $flatpak_target"
+            echo "Not present: $local_target"
         fi
     }
     
@@ -237,7 +285,7 @@ set -eu
             echo "Headcrab Bootstrapping SLSsteam.."
             export_sls wheresteam -clearbeta steam://exit
 		else
-			export_sls wheresteam -clearbeta steam://exit
+			export_sls wheresteam -clearbeta -exitsteam &> /dev/null
         fi
             echo "" &> /dev/null
             }
@@ -465,9 +513,3 @@ EOF
         }
 
     main
-
-
-
-
-
-
