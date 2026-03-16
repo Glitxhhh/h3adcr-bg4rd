@@ -254,7 +254,7 @@ set -eu
 	        echo "Headcrab Downloading Steamos Client Manifest.."
 	        wget "$DeckClientManifest" &> /dev/null
 		elif bazzitecheck; then
-			TrashitewatMani
+			TrashiteWatMani
 	    else
 	        echo "Headcrab Downloading Linux Client Manifest.."
 	        wget "$LinuxClientManifest" &> /dev/null
