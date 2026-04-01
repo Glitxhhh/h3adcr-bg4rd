@@ -60,6 +60,11 @@ set -eu
         read_os_release
         [ "$OS_ID" = "steamos" ]
         }
+	
+	cachyoscheck(){
+        read_os_release
+        [ "$OS_ID" = "cachyos" ]
+        }
 		
 	bazzitecheck(){
         read_os_release
@@ -111,6 +116,23 @@ set -eu
             echo "SteamClientType: Bazzite"
         }
 
+	CachyClientCheck(){
+        if [ -f "steam_client_steamdeck_stable_ubuntu12.manifest" ]; then
+            versionnumber=$(grep '"version"' steam_client_steamdeck_stable_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Stable (CachyOS-Handheld)"
+        elif [ -f steam_client_steamdeck_publicbeta_ubuntu12.manifest ]; then
+            versionnumber=$(grep '"version"' steam_client_steamdeck_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Beta (CachyOS-Handheld)"
+		elif [ -f "steam_client_ubuntu12.manifest" ]; then
+            versionnumber=$(grep '"version"' steam_client_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Stable (CachyOS-Desktop)"
+		else
+            versionnumber=$(grep '"version"' steam_client_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Beta (CachyOS-Desktop)"
+        fi
+            echo "SteamClientType: CachyOS"
+        }
+
     FlatpakClientCheck(){
         if [ -f "steam_client_ubuntu12.manifest" ]; then
             versionnumber=$(grep '"version"' steam_client_ubuntu12.manifest | awk -F'"' '{print $4}')
@@ -141,6 +163,8 @@ set -eu
             SteamOSClientCheck
 		elif bazzitecheck; then
             BazziteClientCheck
+		elif cachyoscheck; then
+			CachyClientCheck
         elif flatpakcheck; then
             FlatpakClientCheck
         else
@@ -249,6 +273,19 @@ set -eu
 		fi
 			echo "" &> /dev/null
 		}
+
+	CachyWatMani(){
+		wheresteamcfg
+		cd package/
+		if [ -f "steam_client_steamdeck_stable_ubuntu12.installed"]; then
+			echo "Headcrab Downloading CachyOS-Handheld Client Manifest"
+			wget "$DeckClientManifest" &> /dev/null
+		else
+			echo "Headcrab Downloading CachyOS-Desktop Client Manifest"
+			wget "$LinuxClientManifest" &> /dev/null
+		fi
+			echo "" &> /dev/null
+		}
 		
     DownloadClientManifest(){
 	    if steamoscheck; then
@@ -256,6 +293,8 @@ set -eu
 	        wget "$DeckClientManifest" &> /dev/null
 		elif bazzitecheck; then
 			TrashiteWatMani
+		elif cachyoscheck; then
+			CachyWatMani
 	    else
 	        echo "Headcrab Downloading Linux Client Manifest.."
 	        wget "$LinuxClientManifest" &> /dev/null
@@ -324,6 +363,10 @@ set -eu
            export_sls wheresteam -exitsteam
 		elif bazzitecheck; then
 			echo "Bazzite Detected"
+            echo "Headcrab Bootstrapping SLSsteam.."
+           export_sls wheresteam -exitsteam
+		elif cachyoscheck; then
+			echo "CachyOS Detected"
             echo "Headcrab Bootstrapping SLSsteam.."
            export_sls wheresteam -exitsteam
         elif flatpakcheck; then
