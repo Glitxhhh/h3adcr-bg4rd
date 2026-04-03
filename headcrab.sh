@@ -159,7 +159,18 @@ set -eu
         fi
             echo "SteamClientType: Native"
         }
-
+		
+	VoidClientCheck(){
+        if [ -f "steam_client_ubuntu12.manifest" ]; then
+            versionnumber=$(grep '"version"' steam_client_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Stable"
+        else
+            versionnumber=$(grep '"version"' steam_client_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Beta"
+        fi
+            echo "SteamClientType: Void"
+        }
+		
     CheckClientInfo(){
         echo "SteamClientInfo:"
         wheresteamcfg
@@ -170,6 +181,8 @@ set -eu
             BazziteClientCheck
 		elif cachyoscheck; then
 			CachyClientCheck
+		elif voidcheck; then
+			VoidClientCheck
         elif flatpakcheck; then
             FlatpakClientCheck
         else
@@ -375,8 +388,12 @@ set -eu
             echo "Headcrab Bootstrapping SLSsteam.."
            export_sls wheresteam -exitsteam
         elif flatpakcheck; then
-            echo "Headcrab Bootstrapping SLSsteam.."
-            export_sls wheresteam -clearbeta steam://exit
+            echo "Headcrab Bootstrapping SLSsteam.."  
+			export_sls wheresteam -clearbeta steam://exit
+		elif voidcheck; then
+			echo "Void Linux"
+			echo "Headcrab Bootstrapping SLSsteam.."  
+			export_sls wheresteam -clearbeta steam://exit
 		else
 			export_sls wheresteam -clearbeta -exitsteam &> /dev/null
         fi
