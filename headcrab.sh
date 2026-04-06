@@ -97,8 +97,12 @@ set -eu
         if [ -f "steam_client_steamdeck_stable_ubuntu12.manifest" ]; then
             versionnumber=$(grep '"version"' steam_client_steamdeck_stable_ubuntu12.manifest | awk -F'"' '{print $4}')
             echo "SteamClientChannel: Stable"
-        else [ -f steam_client_steamdeck_publicbeta_ubuntu12.manifest ]; then
-            echo "SteamClientChannel: Beta"
+        elif [ -f steam_client_steamdeck_publicbeta_ubuntu12.manifest ]; then
+            versionnumber=$(grep '"version"' steam_client_steamdeck_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
+			echo "SteamClientChannel: Beta"
+			echo "Reverting To Stable Client With DGSC"
+		else
+			echo "Unknown Version Number"
         fi
             echo "SteamClientType: SteamOS"
         }
