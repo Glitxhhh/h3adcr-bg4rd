@@ -13,7 +13,7 @@ set -eu
     FlatpakSLSsteamConfigDir=$HOME/.var/app/com.valvesoftware.Steam/.config/SLSsteam
     SLSsteamInstallDir=$HOME/.local/share/SLSsteam
     SLSsteamConfigDir=$HOME/.config/SLSsteam
-    InstallDir=$SCRIPT_DIR/bin
+    InstallDir=$SCRIPT_DIR/SLSsteam_Download/bin
     Headcrab_Downgrader_Path=$HOME/.headcrab
 	
 	#URL'S
@@ -496,6 +496,8 @@ set -eu
     downloadSLSsteam(){
         echo "Downloading Latest SLSsteam.."
         cd $SCRIPT_DIR/
+		mkdir -p SLSsteam_Download
+		cd SLSsteam_Download
         wget -O SLSsteam-Any.7z \
     $(curl -s "https://api.github.com/repos/AceSLS/SLSsteam/releases/latest" \
     | grep "browser_download_url" \
@@ -516,7 +518,7 @@ set -eu
 
     extractSLSsteam(){
         downloadSLSsteam
-         7z x $SCRIPT_DIR/SLSsteam-Any.7z -aoa > /dev/null
+         7z x $SCRIPT_DIR/SLSsteam_Download/SLSsteam-Any.7z -aoa > /dev/null
          rm -rf tools
          rm -rf res
          rm setup.sh
