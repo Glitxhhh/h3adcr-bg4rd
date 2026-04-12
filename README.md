@@ -38,7 +38,10 @@ Headcrab is a rootless Steam client compatibility helper that compares the insta
    * **W.I.P Support**
      
       * Void Linux
-      * Artix?
+        * Install Dependacies For Now Void In Testing.
+ ```
+xbps-install {wget,curl,grep,awk,sed,7zip}
+```
         
 
 
