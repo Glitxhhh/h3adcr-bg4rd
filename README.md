@@ -63,12 +63,6 @@ curl -fsSL "https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/mai
 ## Troubleshooting
 [View the Wiki](https://github.com/Deadboy666/h3adcr-b/wiki)
 
-## WIP Support
-**Void Linux** 
-Install Theese Dependacies Before Running Headcrab
-```
-xbps-install {wget,curl,grep,awk,sed,7zip}
-```
 ## Types Of Installs Headcrab Will Not Support
 **Snap Steam Installs** "Install The [Native Binary](https://cdn.akamai.steamstatic.com/client/installer/steam.deb) Or Use The [Flatpak](https://flathub.org/en/apps/com.valvesoftware.Steam)"
 
