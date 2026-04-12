@@ -23,16 +23,20 @@ Headcrab is a rootless Steam client compatibility helper that compares the insta
     
  **Distro's Supported By h3adcr-b.**
    * Fedora Based Distros
+     
       - Nobara
       - Fedora
    * Arch/SteamOS Like Distros
+     
      - Bazzite
      - CachyOS
      - Steamos
      - Chimera
      - Arch Based Distros (ex. Manjaro, Endevour, Artix?) 
    * Ubuntu/Debian Based Distros.
+     
    * **W.I.P Support**
+     
       * Void Linux
       * Artix?
         
