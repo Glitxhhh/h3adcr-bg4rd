@@ -16,15 +16,14 @@ Headcrab is a rootless Steam client compatibility helper that compares the insta
 - Overides Steam client updates to maintain compatibility with SLSsteam updates.
 - Works with Native, Flatpak, and SteamOS,Bazzite installations.
 - Rootless operation* *As Long as The Dependacies Are Met.*
+
+## Requirements
+- Steam installed (Native or Flatpak).
+- `wget`, `curl`, `grep`, `awk`, `sed`, `7z` available in PATH.
  ## Supported Client Installs.
   
   - Native Installs (The Native Package That You Install On Your Distro)
   - Flatpak Installs (Its Native In A Limited Container)
-
-    ## Requirements
-
-- Steam installed (Native or Flatpak).
-- `wget`, `curl`, `grep`, `awk`, `sed`, `7z` available in PATH.
 
  **Distro's Supported By h3adcr-b.**
    * Fedora Based Distros
