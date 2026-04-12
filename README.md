@@ -32,7 +32,7 @@ Headcrab is a rootless Steam client compatibility helper that compares the insta
      - Chimera
      - Arch Based Distros (ex. Manjaro, Endevour, Artix?) 
    * Ubuntu/Debian Based Distros.
-     * **W.I.P Support**
+   * **W.I.P Support**
       * Void Linux
       * Artix?
         
