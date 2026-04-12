@@ -20,7 +20,12 @@ Headcrab is a rootless Steam client compatibility helper that compares the insta
   
   - Native Installs (The Native Package That You Install On Your Distro)
   - Flatpak Installs (Its Native In A Limited Container)
-    
+
+    ## Requirements
+
+- Steam installed (Native or Flatpak).
+- `wget`, `curl`, `grep`, `awk`, `sed`, `7z` available in PATH.
+
  **Distro's Supported By h3adcr-b.**
    * Fedora Based Distros
      
@@ -46,12 +51,6 @@ Void Support Being Worked On
      
    * Artix Try Running Headcrab.
         
-
-
-## Requirements
-
-- Steam installed (Native or Flatpak).
-- `wget`, `curl`, `grep`, `awk`, `sed`, `7z` available in PATH.
 
 ## Usage
 
