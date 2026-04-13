@@ -10,8 +10,8 @@ Headcrab is a rootless Steam client compatibility helper that compares the insta
 ```bash
 curl -fsSL "https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/main/headcrab.sh" | bash
 ```
-*Requirements: `wget`, `curl`, `grep`, `awk`, `sed`, `7zip`
-- In $Path
+- **Requirements**: `wget`, `curl`, `grep`, `awk`, `sed`, `7zip`
+
 
 ## How it works
 1. Detects Steam install type: Native, Flatpak, or SteamOS.
