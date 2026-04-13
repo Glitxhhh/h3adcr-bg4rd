@@ -17,8 +17,8 @@ Headcrab is a rootless Steam client compatibility helper that compares the insta
 - Rootless operation* *As Long as The Dependacies Are Met.*
 
 ## Requirements
-- Steam installed (Native or Flatpak).
-- `wget`, `curl`, `grep`, `awk`, `sed`, `7z` available in PATH.
+- [a install of steam]().
+- `wget`, `curl`, `grep`, `awk`, `sed`, `7zip` available in PATH.
  ## Supported Client Installs.
   
   - Native Installs (The Native Package That You Install On Your Distro)
