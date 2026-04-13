@@ -2,7 +2,7 @@
 
 Headcrab is a rootless Steam client compatibility helper that compares the installed client version, with a known compatible build, installs SLSsteam and control updates.
 
-**Install**
+* Install
 - **Requirements**: `wget`, `curl`, `grep`, `awk`, `sed`, `7zip`
 ```bash
 curl -fsSL "https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/main/headcrab.sh" | bash
