@@ -32,7 +32,7 @@ Headcrab is a rootless Steam client compatibility helper that compares the insta
       - Atomic (Ublue Based Distros)
         
    * Arch Based Distros
-     - Arch Based Distros (ex. Manjaro, Endevour,Cachy,Artix?)
+     - Arch Based Distros (ex. `Manjaro`, `CachyOS`, `Endevour`, `ArchBTW`)
        
    * Ubuntu/Debian Based Distros.
      
