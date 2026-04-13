@@ -9,6 +9,12 @@ Headcrab is a rootless Steam client compatibility helper that compares the insta
 3. If compatible, it installs and setup SLSsteam injection.
 4. If incompatible, it fetches the required client files and forces a client update using a local override URL.
 5. Patches Steam launch scripts to enable LD_AUDIT injection and updates SLSsteam config.
+## Install
+
+```bash
+curl -fsSL "https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/main/headcrab.sh" | bash
+```
+- For Troubleshooting h3adcr-b* [View the Wiki](https://github.com/Deadboy666/h3adcr-b/wiki)
 
 ## Features
 
@@ -42,12 +48,7 @@ Headcrab is a rootless Steam client compatibility helper that compares the insta
 xbps-install {wget,curl,grep,awk,sed,7zip}
 ```
 
-## Install
 
-```bash
-curl -fsSL "https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/main/headcrab.sh" | bash
-```
-- For Troubleshooting h3adcr-b [View the Wiki](https://github.com/Deadboy666/h3adcr-b/wiki)
 
 
 
