@@ -548,10 +548,10 @@ set -eu
             if grep -q -F "PlayNotOwnedGames: " "config.yaml"; then
                 sed -i "s/^PlayNotOwnedGames:.*/PlayNotOwnedGames: yes/" config.yaml
                 sed -i "s/^SafeMode:.*/SafeMode: yes/" config.yaml
-				sed -i "s/^Notifications:.*/Notifications: no/" config.yaml
+				sed -i "s/^Notifications:.*/Notifications: yes/" config.yaml
                 echo "PlayNotOwnedGames: Enabled"
                 echo "SafeMode: Enabled"
-				echo "Notifications: Disabled"
+				echo "Notifications: Enabled"
             else
                 echo "PlayNotOwnedGames: Enabled"
                 echo "SafeMode: Enabled"
