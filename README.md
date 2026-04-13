@@ -14,7 +14,6 @@ Headcrab is a rootless Steam client compatibility helper that compares the insta
 
 - Installs the latest SLSsteam release.
 - Overides Steam client updates to maintain compatibility with SLSsteam updates.
-- Works with Native, Flatpak, and SteamOS,Bazzite installations.
 - Rootless operation* *As Long as The Dependacies Are Met.*
 
 ## Requirements
