@@ -24,19 +24,16 @@ Headcrab is a rootless Steam client compatibility helper that compares the insta
   
   - Native Installs (The Native Package That You Install On Your Distro)
   - Flatpak Installs (Its Native In A Limited Container)
+  - Handheld/HTPC Installs (SteamOS,Chimera,CachyOS Handheld,Bazzite)
 
  **Distro's Supported By h3adcr-b.**
    * Fedora Based Distros
-     
-      - Nobara
-      - Fedora
-   * Arch/SteamOS Like Distros
-     
-     - Bazzite
-     - CachyOS
-     - Steamos
-     - Chimera
-     - Arch Based Distros (ex. Manjaro, Endevour, Artix?) 
+      - Mutable (Normally Fedora Spins.)
+      - Atomic (Ublue Based Distros)
+        
+   * Arch Based Distros
+     - Arch Based Distros (ex. Manjaro, Endevour,Cachy,Artix?)
+       
    * Ubuntu/Debian Based Distros.
      
    * **W.I.P Support**
@@ -50,7 +47,7 @@ Void Support Being Worked On
      
    * Artix Try Running Headcrab.
 ## Types Of Installs Headcrab Will Not Support
-**Snap Steam Installs** "Install The [Native Binary](https://cdn.akamai.steamstatic.com/client/installer/steam.deb) Or Use The [Flatpak](https://flathub.org/en/apps/com.valvesoftware.Steam)"
+
 
 **Any Thing That SLS DOES NOT SUPPORT**
         
