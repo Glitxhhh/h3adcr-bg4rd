@@ -457,6 +457,7 @@ set -eu
             
     overideupdate(){
         echo "the headcrab latches on the steam process.."
+		killall dgsc | true
         if steamoscheck; then
             echo "Steamos Detected"
             createsteamcfg
@@ -548,7 +549,7 @@ set -eu
             if grep -q -F "PlayNotOwnedGames: " "config.yaml"; then
                 sed -i "s/^PlayNotOwnedGames:.*/PlayNotOwnedGames: yes/" config.yaml
                 sed -i "s/^SafeMode:.*/SafeMode: yes/" config.yaml
-				sed -i "s/^Notifications:.*/Notifications: yes/" config.yaml
+				sed -i "s/^NotifyInit:.*/NotifyInit: yes/" config.yaml
                 echo "PlayNotOwnedGames: Enabled"
                 echo "SafeMode: Enabled"
 				echo "Notifications: Enabled"
