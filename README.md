@@ -19,13 +19,12 @@ Headcrab is a rootless Steam client compatibility helper that compares the insta
 ## Requirements
 - [a install of steam]().
 - `wget`, `curl`, `grep`, `awk`, `sed`, `7zip` available in PATH.
- ## Supported Client Installs.
-  
+  **Supported Client Installs:**
   - Native Installs (The Native Package That You Install On Your Distro)
   - Flatpak Installs (Its Native In A Limited Container)
   - Handheld/HTPC Installs (ex. `SteamOS`, `CachyOS`, `Chimera`, `Bazzite`,`Nobara`)
 
- **Distro's Supported By h3adcr-b.**
+ ## Distro's Supported By h3adcr-b.
    * Fedora Based Distros
       - Mutable (Normally Fedora Spins.)
       - Atomic (Ublue Based Distros)
