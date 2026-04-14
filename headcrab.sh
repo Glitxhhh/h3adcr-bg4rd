@@ -210,7 +210,8 @@ set -eu
         }
 
     preinstallchecks(){
-        InstallDebianDeps
+        InstallVoidDeps
+		InstallDebianDeps
         RemoveArchPkg
         DisableSLSsteamPath
         }
@@ -244,6 +245,72 @@ set -eu
 
         fi
 	    }
+		
+		InstallVoidDeps(){
+        if voidcheck; then
+            if ! command -v xbps-install >/dev/null 2>&1; then
+                echo "Void Linux detected but xbps-install was not found in PATH"
+                return 1
+            fi
+
+            local pkg cmd install_cmd
+            local missing_pkgs=()
+            local missing_cmds=()
+
+            for pkg in wget curl grep gawk sed 7zip; do
+                case "$pkg" in
+                    gawk) cmd="awk" ;;
+                    7zip) cmd="7z" ;;
+                    *) cmd="$pkg" ;;
+                esac
+
+                if ! command -v "$cmd" >/dev/null 2>&1; then
+                    missing_pkgs+=("$pkg")
+                fi
+            done
+
+            if [ "${#missing_pkgs[@]}" -eq 0 ]; then
+                echo "Void dependencies already installed"
+                return 0
+            fi
+
+            if [ "$(id -u)" -eq 0 ]; then
+                install_cmd="xbps-install"
+            elif command -v sudo >/dev/null 2>&1; then
+                install_cmd="sudo xbps-install"
+            else
+                echo "Void dependencies missing: ${missing_pkgs[*]}"
+                echo "Install them with: xbps-install ${missing_pkgs[*]}"
+                echo "Re-run as root or install sudo for automatic dependency installation"
+                return 1
+            fi
+
+            echo "Installing missing Void dependencies: ${missing_pkgs[*]}"
+            if ! $install_cmd -y "${missing_pkgs[@]}"; then
+                echo "Failed to install Void dependencies: ${missing_pkgs[*]}"
+                return 1
+            fi
+
+            for pkg in wget curl grep gawk sed 7zip; do
+                case "$pkg" in
+                    gawk) cmd="awk" ;;
+                    7zip) cmd="7z" ;;
+                    *) cmd="$pkg" ;;
+                esac
+
+                if ! command -v "$cmd" >/dev/null 2>&1; then
+                    missing_cmds+=("$cmd")
+                fi
+            done
+
+            if [ "${#missing_cmds[@]}" -ne 0 ]; then
+                echo "Void dependencies still missing after install: ${missing_cmds[*]}"
+                return 1
+            fi
+
+            echo "Void dependencies installed successfully"
+        fi
+    }
 
     RemoveArchPkg(){
         if archcheck; then
