@@ -97,7 +97,7 @@ set -eu
         if [ -f "steam_client_steamdeck_stable_ubuntu12.manifest" ]; then
             versionnumber=$(grep '"version"' steam_client_steamdeck_stable_ubuntu12.manifest | awk -F'"' '{print $4}')
             echo "SteamClientChannel: Stable"
-        elif [ -f steam_client_steamdeck_publicbeta_ubuntu12.manifest ]; then
+        elif [ -f "steam_client_steamdeck_publicbeta_ubuntu12.manifest" ]; then
             versionnumber=$(grep '"version"' steam_client_steamdeck_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
 			echo "SteamClientChannel: Beta"
 			echo "Reverting To Stable Client With DGSC"
@@ -111,7 +111,7 @@ set -eu
         if [ -f "steam_client_steamdeck_stable_ubuntu12.manifest" ]; then
             versionnumber=$(grep '"version"' steam_client_steamdeck_stable_ubuntu12.manifest | awk -F'"' '{print $4}')
             echo "SteamClientChannel: Stable (Bazzite-Deck)"
-        elif [ -f steam_client_steamdeck_publicbeta_ubuntu12.manifest ]; then
+        elif [ -f "steam_client_steamdeck_publicbeta_ubuntu12.manifest" ]; then
             versionnumber=$(grep '"version"' steam_client_steamdeck_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
             echo "SteamClientChannel: Beta (Bazzite-Deck)"
 		elif [ -f "steam_client_ubuntu12.manifest" ]; then
@@ -128,7 +128,7 @@ set -eu
         if [ -f "steam_client_steamdeck_stable_ubuntu12.manifest" ]; then
             versionnumber=$(grep '"version"' steam_client_steamdeck_stable_ubuntu12.manifest | awk -F'"' '{print $4}')
             echo "SteamClientChannel: Stable (CachyOS-Handheld)"
-        elif [ -f steam_client_steamdeck_publicbeta_ubuntu12.manifest ]; then
+        elif [ -f "steam_client_steamdeck_publicbeta_ubuntu12.manifest" ]; then
             versionnumber=$(grep '"version"' steam_client_steamdeck_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
             echo "SteamClientChannel: Beta (CachyOS-Handheld)"
 		elif [ -f "steam_client_ubuntu12.manifest" ]; then
@@ -352,7 +352,7 @@ set -eu
     TrashiteWatMani(){
 		wheresteamcfg
 		cd package/
-		if [ -f "steam_client_steamdeck_stable_ubuntu12.installed"]; then
+		if [ -f "steam_client_steamdeck_stable_ubuntu12.installed" ]; then
 			echo "Headcrab Downloading Bazzite-Deck Client Manifest"
 			wget "$DeckClientManifest" &> /dev/null
 		else
@@ -365,7 +365,7 @@ set -eu
 	CachyWatMani(){
 		wheresteamcfg
 		cd package/
-		if [ -f "steam_client_steamdeck_stable_ubuntu12.installed"]; then
+		if [ -f "steam_client_steamdeck_stable_ubuntu12.installed" ]; then
 			echo "Headcrab Downloading CachyOS-Handheld Client Manifest"
 			wget "$DeckClientManifest" &> /dev/null
 		else
