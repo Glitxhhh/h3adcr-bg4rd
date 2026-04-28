@@ -28,9 +28,6 @@ Headcrab is a rootless Steam client compatibility helper that compares the insta
        
    * Ubuntu/Debian Based Distros.
    * Void Linux Based Distros.
-     
-   * **W.I.P Support**
-      * Artix?
  ## Getting Started.
 ```bash
 curl -fsSL headcrab.pages.dev | bash
