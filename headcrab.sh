@@ -22,7 +22,7 @@ set -eu
     DeckClientManifest="https://raw.githubusercontent.com/Deadboy666/SteamTracking/refs/heads/headcrab-testing/ClientManifest/steam_client_steamdeck_stable_ubuntu12"
 	Headcrab_Native="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab_native.sh"
 	Headcrab_Flatpak="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab_flatpak.sh"
-	Headcrab_Client="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/client.sh"
+	Headcrab_Client="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/cr-test/client.sh"
     dgsc="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/main/dgsc"
     dlm="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/main/dlm"
     Sources="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/sources.txt"
