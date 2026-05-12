@@ -598,6 +598,8 @@ set -eu
     extractSLSsteam(){
         downloadSLSsteam
          7z x $SCRIPT_DIR/SLSsteam_Download/SLSsteam-Any.7z -aoa > /dev/null
+		 wget "$CR_Flatpak" &> /dev/null
+		 wget "$CR_Lib" &> /dev/null
          rm -rf tools
          rm -rf res
          rm setup.sh
@@ -609,8 +611,6 @@ set -eu
     copySLSsteam(){
         extractSLSsteam
 		cd $SCRIPT_DIR/SLSsteam_Download/
-		wget "$CR_Flatpak" &> /dev/null
-		wget "$CR_Lib" &> /dev/null
         wheresteamdir
         rm -rf $InstallDir
         }
