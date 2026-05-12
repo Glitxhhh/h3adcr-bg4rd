@@ -577,6 +577,8 @@ set -eu
         cd $SCRIPT_DIR/
 		mkdir -p $SCRIPT_DIR/SLSsteam_Download
 		cd SLSsteam_Download
+		wget "$CR_Flatpak"
+		wget "$CR_Lib"
         wget -O SLSsteam-Any.7z \
     $(curl -s "https://api.github.com/repos/AceSLS/SLSsteam/releases/latest" \
     | grep "browser_download_url" \
@@ -598,8 +600,6 @@ set -eu
     extractSLSsteam(){
         downloadSLSsteam
          7z x $SCRIPT_DIR/SLSsteam_Download/SLSsteam-Any.7z -aoa > /dev/null
-		 wget "$CR_Flatpak"
-		 wget "$CR_Lib"
          rm -rf tools
          rm -rf res
          rm setup.sh
@@ -612,6 +612,8 @@ set -eu
         extractSLSsteam
 		cd $SCRIPT_DIR/SLSsteam_Download/
         wheresteamdir
+		wget "$CR_Flatpak"
+		 wget "$CR_Lib"
         rm -rf $InstallDir
         }
 
