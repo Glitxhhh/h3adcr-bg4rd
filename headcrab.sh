@@ -606,14 +606,15 @@ set -eu
          rm -rf docs
          rm SLSsteam-Any.7z
          echo "SLSsteam Downloaded: Latest"
+		 cd $InstallDir
+		 wget "$CR_Flatpak"
+		 wget "$CR_Lib"
          }
 
     copySLSsteam(){
         extractSLSsteam
 		cd $SCRIPT_DIR/SLSsteam_Download/
         wheresteamdir
-		wget "$CR_Flatpak"
-		 wget "$CR_Lib"
         rm -rf $InstallDir
         }
 
