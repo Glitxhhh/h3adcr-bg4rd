@@ -13,6 +13,8 @@ set -eu
     FlatpakSLSsteamConfigDir=$HOME/.var/app/com.valvesoftware.Steam/.config/SLSsteam
     SLSsteamInstallDir=$HOME/.local/share/SLSsteam
     SLSsteamConfigDir=$HOME/.config/SLSsteam
+	CloudRedirectDir=$HOME/.local/share/CloudRedirect
+	FlatpakCloudRedirectDir=$HOME/.var/app/com.valvesoftware.Steam/.local/share/CloudRedirect
     InstallDir=$SCRIPT_DIR/SLSsteam_Download/bin
     Headcrab_Downgrader_Path=$HOME/.headcrab
 	
@@ -20,13 +22,15 @@ set -eu
     Headcrab_Downgrade_URL="http://localhost:1666/"
 	LinuxClientManifest="https://raw.githubusercontent.com/Deadboy666/SteamTracking/refs/heads/headcrab-testing/ClientManifest/steam_client_ubuntu12"
     DeckClientManifest="https://raw.githubusercontent.com/Deadboy666/SteamTracking/refs/heads/headcrab-testing/ClientManifest/steam_client_steamdeck_stable_ubuntu12"
-	Headcrab_Native="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab_native.sh"
-	Headcrab_Flatpak="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab_flatpak.sh"
+	Headcrab_Native="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/cr-test/headcrab_native.sh"
+	Headcrab_Flatpak="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/cr-test/headcrab_flatpak.sh"
 	Headcrab_Client="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/client.sh"
     dgsc="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/main/dgsc"
     dlm="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/main/dlm"
     Sources="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/sources.txt"
-	Headcrab_Updater="https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/main/headcrab.desktop"
+	Headcrab_Updater="https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/cr-testbranch/headcrab.desktop"
+	CR_Flatpak="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/cr-test/cloudredirect.flatpak"
+	CR_Lib="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/cr-test/cloud_redirect.so"
 	
     read_os_release(){
         local f
@@ -492,14 +496,20 @@ set -eu
     wheresteamdir(){
         if [ -d "$FlatpakSteamInstallDir" ]; then
                 mkdir -p $FlatpakSLSsteamInstallDir
+				mkdir -p $FlatpakCloudRedirectDir
                 cp -f $InstallDir/library-inject.so $FlatpakSLSsteamInstallDir/
-                cp -f $InstallDir/SLSsteam.so $FlatpakSLSsteamInstallDir/ 
+                cp -f $InstallDir/SLSsteam.so $FlatpakSLSsteamInstallDir/
+				cp -f $InstallDir/cloud_redirect.so $FlatpakCloudRedirectDir/
         else
                  mkdir -p $SLSsteamInstallDir
                  mkdir -p $SLSsteamConfigDir
+				 mkdir -p $CloudRedirectDir
                  cp -f $InstallDir/library-inject.so $SLSsteamInstallDir/
                  cp -f $InstallDir/SLSsteam.so $SLSsteamInstallDir/
+				 cp -f $InstallDir/cloud_redirect.so $CloudRedirectDir/
             fi
+				flatpak install --user cloudredirect.flatpak
+				rm cloudredirect.flatpak
                 echo "" &> /dev/null
             }
             
@@ -598,6 +608,9 @@ set -eu
 
     copySLSsteam(){
         extractSLSsteam
+		cd $SCRIPT_DIR/SLSsteam_Download/
+		wget "$CR_Flatpak" &> /dev/null
+		wget "$CR_Lib" &> /dev/null
         wheresteamdir
         rm -rf $InstallDir
         }
@@ -609,7 +622,7 @@ set -eu
         else
             copySLSsteam
         fi
-            echo &. /dev/null
+            echo &> /dev/null
         }
 
     editconfig(){
@@ -676,7 +689,8 @@ EOF
             patchsteam
             echo "BlockedClientUpdates: Enabled"
             editconfig
-            echo "HeadcrabStatus: Patched"
+            echo "CloudRedirect: Installed"
+			echo "HeadcrabStatus: Patched"
             }
 
     main(){
