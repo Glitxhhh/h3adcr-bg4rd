@@ -508,9 +508,6 @@ set -eu
                  cp -f $InstallDir/SLSsteam.so $SLSsteamInstallDir/
 				 cp -f $InstallDir/cloud_redirect.so $CloudRedirectDir/
             fi
-                echo "Installing Cloud Redirect App"
-				flatpak install --user $InstallDir/cloudredirect.flatpak
-				echo "Cloud Redirect App Is Installed."
 				echo "" &> /dev/null
             }
             
@@ -614,6 +611,9 @@ set -eu
     copySLSsteam(){
         extractSLSsteam
         wheresteamdir
+		echo "Installing Cloud Redirect App"
+		flatpak install --user $InstallDir/cloudredirect.flatpak --assumeyes
+		echo "Cloud Redirect App Is Installed."
         rm -rf $InstallDir
         }
 
