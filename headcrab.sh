@@ -604,7 +604,6 @@ set -eu
 		 cd $InstallDir/
 		 echo "Downloading CloudRedirect"
 		 wget -O cloud_redirect.so "$CloudRedirectLib"
-		 wget -O cloudredirect.flatpak "$CloudRedirectApp"
          }
 
     copySLSsteam(){
