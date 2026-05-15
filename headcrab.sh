@@ -568,17 +568,18 @@ set -eu
         conditioncheck
         }
 
-
     downloadSLSsteam(){
         echo "Downloading Latest SLSsteam.."
         cd $SCRIPT_DIR/
-		mkdir -p $SCRIPT_DIR/SLSsteam_Download
-		cd SLSsteam_Download
+        mkdir -p $SCRIPT_DIR/SLSsteam_Download
+        cd SLSsteam_Download
+        local TAG
+        TAG=$(curl -sSL --connect-timeout 15 --max-time 30 \
+            -o /dev/null -w "%{url_effective}" \
+            "https://github.com/AceSLS/SLSsteam/releases/latest" 2>/dev/null)
+        TAG="${TAG##*/}"
         wget -O SLSsteam-Any.7z \
-    $(curl -s "https://api.github.com/repos/AceSLS/SLSsteam/releases/latest" \
-    | grep "browser_download_url" \
-    | grep "SLSsteam-Any.7z" \
-    | cut -d '"' -f 4) &> /dev/null
+            "https://github.com/AceSLS/SLSsteam/releases/download/$TAG/SLSsteam-Any.7z" &> /dev/null
     }
     
     export_sls(){
