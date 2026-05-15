@@ -8,10 +8,12 @@ set -eu
     SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 	ApplicationDirectory=$HOME/.local/share/applications
     SteamInstallDir=$HOME/.steam/steam
-    FlatpakSteamInstallDir=$HOME/.var/app/com.valvesoftware.Steam/.steam/steam
+    FlatpakCloudRedirectDir=$HOME/.var/app/com.valvesoftware.Steam/.local/share/CloudRedirect
+	FlatpakSteamInstallDir=$HOME/.var/app/com.valvesoftware.Steam/.steam/steam
     FlatpakSLSsteamInstallDir=$HOME/.var/app/com.valvesoftware.Steam/.local/share/SLSsteam
     FlatpakSLSsteamConfigDir=$HOME/.var/app/com.valvesoftware.Steam/.config/SLSsteam
-    SLSsteamInstallDir=$HOME/.local/share/SLSsteam
+    CloudRedirectDir=$HOME/.local/share/CloudRedirect
+	SLSsteamInstallDir=$HOME/.local/share/SLSsteam
     SLSsteamConfigDir=$HOME/.config/SLSsteam
     InstallDir=$SCRIPT_DIR/SLSsteam_Download/bin
     Headcrab_Downgrader_Path=$HOME/.headcrab
@@ -20,9 +22,10 @@ set -eu
     Headcrab_Downgrade_URL="http://localhost:1666/"
 	LinuxClientManifest="https://raw.githubusercontent.com/Deadboy666/SteamTracking/refs/heads/headcrab-testing/ClientManifest/steam_client_ubuntu12"
     DeckClientManifest="https://raw.githubusercontent.com/Deadboy666/SteamTracking/refs/heads/headcrab-testing/ClientManifest/steam_client_steamdeck_stable_ubuntu12"
-	Headcrab_Native="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab_native.sh"
-	Headcrab_Flatpak="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab_flatpak.sh"
-	Headcrab_Client="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/client.sh"
+	Headcrab_Native="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/cr-test/headcrab_native.sh"
+	Headcrab_Flatpak="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/cr-test/headcrab_flatpak.sh"
+	Headcrab_Client="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/cr-test/client.sh"
+	CloudRedirectLib="https://github.com/Selectively11/CloudRedirect/releases/download/linux/cloud_redirect.so"
     dgsc="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/main/dgsc"
     dlm="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/main/dlm"
     Sources="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/sources.txt"
@@ -492,15 +495,19 @@ set -eu
     wheresteamdir(){
         if [ -d "$FlatpakSteamInstallDir" ]; then
                 mkdir -p $FlatpakSLSsteamInstallDir
+				mkdir -p $FlatpakCloudRedirectDir
                 cp -f $InstallDir/library-inject.so $FlatpakSLSsteamInstallDir/
-                cp -f $InstallDir/SLSsteam.so $FlatpakSLSsteamInstallDir/ 
+                cp -f $InstallDir/SLSsteam.so $FlatpakSLSsteamInstallDir/
+				cp -f $InstallDir/cloud_redirect.so $FlatpakCloudRedirectDir/
         else
-                 mkdir -p $SLSsteamInstallDir
+                 mkdir -p $CloudRedirectDir
+				 mkdir -p $SLSsteamInstallDir
                  mkdir -p $SLSsteamConfigDir
                  cp -f $InstallDir/library-inject.so $SLSsteamInstallDir/
                  cp -f $InstallDir/SLSsteam.so $SLSsteamInstallDir/
+				 cp -f $InstallDir/cloud_redirect.so $CloudRedirectDir/
             fi
-                echo "" &> /dev/null
+				echo "" &> /dev/null
             }
             
     wheresteamcfg(){
@@ -593,7 +600,10 @@ set -eu
          rm setup.sh
          rm -rf docs
          rm SLSsteam-Any.7z
-         echo "SLSsteam Downloaded: Latest"
+		 echo "SLSsteam Downloaded: Latest"
+		 cd $InstallDir/
+		 echo "Downloading CloudRedirect"
+		 wget -O cloud_redirect.so "$CloudRedirectLib"
          }
 
     copySLSsteam(){
