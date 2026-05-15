@@ -34,7 +34,7 @@ Headcrab is a rootless Steam client compatibility helper that compares the insta
 ```bash
 curl -fsSL headcrab.pages.dev | bash
 ```
-* Installing The CloudRedirect App (Needs Flatpak with Flathub User Repo)
+* Installing The CloudRedirect App (Needs Flatpak)
 ```bash
 curl -fsSL headcrab.pages.dev/cloudredirect | bash
 ```
