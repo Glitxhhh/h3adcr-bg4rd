@@ -498,14 +498,14 @@ set -eu
 				mkdir -p $FlatpakCloudRedirectDir
                 cp -f $InstallDir/library-inject.so $FlatpakSLSsteamInstallDir/
                 cp -f $InstallDir/SLSsteam.so $FlatpakSLSsteamInstallDir/
-				cp -f $InstallDir/cloud_redirect.so $FlatpakCloudRedirectDir/
+				#cp -f $InstallDir/cloud_redirect.so $FlatpakCloudRedirectDir/
         else
                  mkdir -p $CloudRedirectDir
 				 mkdir -p $SLSsteamInstallDir
                  mkdir -p $SLSsteamConfigDir
                  cp -f $InstallDir/library-inject.so $SLSsteamInstallDir/
                  cp -f $InstallDir/SLSsteam.so $SLSsteamInstallDir/
-				 cp -f $InstallDir/cloud_redirect.so $CloudRedirectDir/
+				 #cp -f $InstallDir/cloud_redirect.so $CloudRedirectDir/
             fi
 				echo "" &> /dev/null
             }
@@ -603,8 +603,8 @@ set -eu
          rm SLSsteam-Any.7z
 		 echo "SLSsteam Downloaded: Latest"
 		 cd $InstallDir/
-		 echo "Downloading CloudRedirect"
-		 wget -O cloud_redirect.so "$CloudRedirectLib"
+		 #echo "Downloading CloudRedirect"
+		 #wget -O cloud_redirect.so "$CloudRedirectLib"
          }
 
     copySLSsteam(){
