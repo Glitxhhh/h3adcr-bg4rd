@@ -485,9 +485,9 @@ set -eu
         
     wheresteam(){
         if [ -d "$FlatpakSteamInstallDir" ]; then
-                flatpak run com.valvesoftware.Steam "$@"
+                flatpak run com.valvesoftware.Steam "$@" &> /dev/null
         else
-                steam "$@"
+                steam "$@" &> /dev/null
             fi
                 echo "" &> /dev/null
             }
