@@ -86,13 +86,13 @@ set -eu
         [ -d "$FlatpakSteamInstallDir" ]
         }
 		
-	SetupHeadcrab_Updater(){
+		SetupHeadcrab_Updater(){
 		mkdir -p $ApplicationDirectory
+		mkdir -p $IconDirectory
+		cd $IconDirectory/
+		wget -O headcrab.png "$Headcrab_Icon" &> /dev/null
 		cd $ApplicationDirectory/
-		if [ -f headcrab.desktop ]; then
-			rm headcrab.desktop
-		fi
-			wget "$Headcrab_Updater" &> /dev/null
+			wget -O headcrab.desktop "$Headcrab_Updater" &> /dev/null
 		    chmod +x headcrab.desktop
 			update-desktop-database $ApplicationDirectory
 			echo "Headcrab Updater Now In Your Applications Menu"
