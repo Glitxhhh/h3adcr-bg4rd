@@ -26,7 +26,7 @@ set -eu
 	Headcrab_Native="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/cr-test/headcrab_native.sh"
 	Headcrab_Flatpak="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/cr-test/headcrab_flatpak.sh"
 	Headcrab_Client="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/cr-test/client.sh"
-	CloudRedirectLib="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/cr-test/cloud_redirect.so"
+	CloudRedirectLib="https://github.com/Selectively11/h3adcr-b/releases/download/linux-test/cloud_redirect.so"
     dgsc="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/main/dgsc"
     dlm="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/main/dlm"
     Sources="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/testing/sources.txt"
