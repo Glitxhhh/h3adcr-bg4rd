@@ -7,7 +7,7 @@ set -eu
     #Paths
     SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 	ApplicationDirectory=$HOME/.local/share/applications
-	IconDirectory=$HOME/.local/share/icons/hicolor/48x48/apps/
+	IconDirectory=$HOME/.local/share/icons/hicolor/48x48/apps
     SteamInstallDir=$HOME/.steam/steam
     FlatpakCloudRedirectDir=$HOME/.var/app/com.valvesoftware.Steam/.local/share/CloudRedirect
 	FlatpakSteamInstallDir=$HOME/.var/app/com.valvesoftware.Steam/.steam/steam
