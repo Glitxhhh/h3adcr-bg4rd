@@ -29,7 +29,7 @@ set -eu
 	CloudRedirectLib="https://github.com/Selectively11/CloudRedirect/releases/download/linux/cloud_redirect.so"
     dgsc="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/main/dgsc"
     dlm="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/main/dlm"
-    Sources="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/testing/sources.txt"
+    Sources="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/sources.txt"
 	Headcrab_Updater="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab.desktop"
 	Headcrab_Icon="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab.png"
 	
