@@ -31,7 +31,7 @@ Headcrab is a rootless Steam client compatibility helper
  * Installing Headcrab
  
 ```bash
-curl -fsSL headcrab.pages.dev | bash
+curl -fsSL "https://raw.githubusercontent.com/Deadboy666/h3adcr-b/refs/heads/testing/headcrab.sh" | bash
 ```
 
 - For Troubleshooting h3adcr-b* [View the Wiki](https://github.com/Deadboy666/h3adcr-b/wiki/Headcrab-Wiki)
