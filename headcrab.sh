@@ -324,10 +324,10 @@ set -eu
 	 local packages=("wget" "curl" "grep" "awk" "sed" "7zip")
     for pkg in "${packages[@]}"; do
         if pacman -Qs "$pkg" > /dev/null 2>&1; then
-            echo "$pkg is installed."
+            echo "Headcrab Has Found $pkg."
         else
-            echo " $pkg is NOT installed."
-			sudo pacman -S "$pkg"
+            echo " Headcrab Will Install $pkg."
+			sudo pacman -S "$pkg" --noconfirm
         fi
     done
 	fi
