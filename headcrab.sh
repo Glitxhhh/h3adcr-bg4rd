@@ -218,6 +218,7 @@ set -eu
     preinstallchecks(){
         InstallVoidDeps
 		InstallDebianDeps
+		InstallArchDeps
         RemoveArchPkg
         DisableSLSsteamPath
         }
@@ -317,6 +318,26 @@ set -eu
             echo "Void dependencies installed successfully"
         fi
     }
+	
+	InstallArchDeps(){
+		if archcheck; then
+		 local packages=("wget" "curl" "grep" "awk" "sed" "7zip")
+	    local to_install=()
+	
+	    for pkg in "${packages[@]}"; do
+	        if ! pacman -Qs "$pkg" &>/dev/null; then
+	            to_install+=("$pkg")
+	        fi
+	    done
+	
+	    if [ ${#to_install[@]} -eq 0 ]; then
+	        echo "All required packages are already installed."
+	    else
+	        echo "Installing missing packages: ${to_install[*]}"
+	        sudo pacman -S "${to_install[@]}" --noconfirm
+	    fi
+		fi
+	}
 
     RemoveArchPkg(){
         if archcheck; then
