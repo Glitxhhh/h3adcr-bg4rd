@@ -218,6 +218,7 @@ set -eu
     preinstallchecks(){
         InstallVoidDeps
 		InstallDebianDeps
+		InstallArchDeps
         RemoveArchPkg
         DisableSLSsteamPath
         }
@@ -317,6 +318,20 @@ set -eu
             echo "Void dependencies installed successfully"
         fi
     }
+	
+	InstallArchDeps(){
+	if archcheck; then
+	local headcrab_pkgs="curl 7zip awk grep sed"
+    if pacman -Q "$headcrab_pkgs" &>/dev/null; then
+        echo "Dependacies are already installed."
+        return 0
+    else
+        echo "$headcrab_pkgs is NOT installed."
+        sudo pacman -S "$headcrab_pkgs"
+		return 1
+    fi
+	fi
+}
 
     RemoveArchPkg(){
         if archcheck; then
