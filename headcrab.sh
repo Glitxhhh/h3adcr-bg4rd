@@ -320,18 +320,24 @@ set -eu
     }
 	
 	InstallArchDeps(){
-	if archcheck; then
-	 local packages=("wget" "curl" "grep" "awk" "sed" "7zip")
-    for pkg in "${packages[@]}"; do
-        if pacman -Qs "$pkg" > /dev/null 2>&1; then
-            echo "Headcrab Has Found $pkg."
-        else
-            echo " Headcrab Will Install $pkg."
-			sudo pacman -S "$pkg" --noconfirm
-        fi
-    done
-	fi
-}
+		if archcheck; then
+		 local packages=("wget" "curl" "grep" "awk" "sed" "7zip")
+	    local to_install=()
+	
+	    for pkg in "${packages[@]}"; do
+	        if ! pacman -Qs "$pkg" &>/dev/null; then
+	            to_install+=("$pkg")
+	        fi
+	    done
+	
+	    if [ ${#to_install[@]} -eq 0 ]; then
+	        echo "All required packages are already installed."
+	    else
+	        echo "Installing missing packages: ${to_install[*]}"
+	        sudo pacman -S "${to_install[@]}" --noconfirm
+	    fi
+		fi
+	}
 
     RemoveArchPkg(){
         if archcheck; then
