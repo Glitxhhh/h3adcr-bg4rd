@@ -1,4 +1,365 @@
+#!/usr/bin/env bash
+set -eu
 
+    #Headcrab Compatibile Client Version
+    HeadcrabCompatibleClientVer=1779918128
+    
+    #Paths
+    SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+	ApplicationDirectory=$HOME/.local/share/applications
+	IconDirectory=$HOME/.local/share/icons/hicolor/48x48/apps
+    SteamInstallDir=$HOME/.steam/steam
+    FlatpakCloudRedirectDir=$HOME/.var/app/com.valvesoftware.Steam/.local/share/CloudRedirect
+	FlatpakSteamInstallDir=$HOME/.var/app/com.valvesoftware.Steam/.steam/steam
+    FlatpakSLSsteamInstallDir=$HOME/.var/app/com.valvesoftware.Steam/.local/share/SLSsteam
+    FlatpakSLSsteamConfigDir=$HOME/.var/app/com.valvesoftware.Steam/.config/SLSsteam
+    CloudRedirectDir=$HOME/.local/share/CloudRedirect
+	SLSsteamInstallDir=$HOME/.local/share/SLSsteam
+    SLSsteamConfigDir=$HOME/.config/SLSsteam
+    InstallDir=$SCRIPT_DIR/SLSsteam_Download/bin
+    Headcrab_Downgrader_Path=$HOME/.headcrab
+	
+	#URL'S
+    Headcrab_Downgrade_URL="http://localhost:1666/"
+	LinuxClientManifest="https://raw.githubusercontent.com/Deadboy666/SteamTracking/refs/heads/headcrab/ClientManifest/steam_client_ubuntu12"
+    DeckClientManifest="https://raw.githubusercontent.com/Deadboy666/SteamTracking/refs/heads/headcrab/ClientManifest/steam_client_steamdeck_stable_ubuntu12"
+	Headcrab_Native="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab_native.sh"
+	Headcrab_Flatpak="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab_flatpak.sh"
+	Headcrab_Client="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/cr-test/client.sh"
+	CloudRedirectLib="https://github.com/Selectively11/CloudRedirect/releases/download/linux/cloud_redirect.so"
+    dgsc="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/main/dgsc"
+    dlm="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/main/dlm"
+    Sources="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/sources.txt"
+	Headcrab_Updater="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab.desktop"
+	Headcrab_Icon="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab.png"
+	
+    read_os_release(){
+        local f
+        OS_ID=""
+        OS_ID_LIKE=""
+        for f in /etc/os-release /usr/lib/os-release; do
+            [ -r "$f" ] || continue
+            . "$f"
+            break
+        done
+        OS_ID=${ID:-}
+        OS_ID_LIKE=${ID_LIKE:-}
+    }
+
+    archcheck(){
+        read_os_release
+        case " $OS_ID $OS_ID_LIKE " in
+            *" arch "*|*" cachyos "*) return 0 ;;
+        esac
+        return 1
+        }
+
+    debiancheck(){
+        read_os_release
+        case " $OS_ID $OS_ID_LIKE " in
+            *" debian "*|*" ubuntu "*) return 0 ;;
+        esac
+        return 1
+        }   
+
+    steamoscheck(){
+        read_os_release
+        [ "$OS_ID" = "steamos" ]
+        }
+		
+	voidcheck(){
+        read_os_release
+        [ "$OS_ID" = "void" ]
+        }
+	
+	cachyoscheck(){
+        read_os_release
+        [ "$OS_ID" = "cachyos" ]
+        }
+		
+	bazzitecheck(){
+        read_os_release
+        [ "$OS_ID" = "bazzite" ]
+        }
+    
+    flatpakcheck(){
+        [ -d "$FlatpakSteamInstallDir" ]
+        }
+		
+		SetupHeadcrab_Updater(){
+		mkdir -p $ApplicationDirectory
+		mkdir -p $IconDirectory
+		cd $IconDirectory/
+		wget -O headcrab.png "$Headcrab_Icon" &> /dev/null
+		cd $ApplicationDirectory/
+			wget -O headcrab.desktop "$Headcrab_Updater" &> /dev/null
+		    chmod +x headcrab.desktop
+			update-desktop-database $ApplicationDirectory
+			echo "Headcrab Updater Now In Your Applications Menu"
+			echo "Can Open Up Headcrab Updater To Update To Latest Version."
+	}
+        
+    SteamOSClientCheck(){
+        if [ -f "steam_client_steamdeck_stable_ubuntu12.manifest" ]; then
+            versionnumber=$(grep '"version"' steam_client_steamdeck_stable_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Stable"
+        elif [ -f steam_client_steamdeck_publicbeta_ubuntu12.manifest ]; then
+            versionnumber=$(grep '"version"' steam_client_steamdeck_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
+			echo "SteamClientChannel: Beta"
+			echo "Reverting To Stable Client With DGSC"
+		else
+			echo "Unknown Version Number"
+        fi
+            echo "SteamClientType: SteamOS"
+        }
+		
+	BazziteClientCheck(){
+        if [ -f "steam_client_steamdeck_stable_ubuntu12.manifest" ]; then
+            versionnumber=$(grep '"version"' steam_client_steamdeck_stable_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Stable (Bazzite-Deck)"
+        elif [ -f steam_client_steamdeck_publicbeta_ubuntu12.manifest ]; then
+            versionnumber=$(grep '"version"' steam_client_steamdeck_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Beta (Bazzite-Deck)"
+		elif [ -f "steam_client_ubuntu12.manifest" ]; then
+            versionnumber=$(grep '"version"' steam_client_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Stable (Bazzite-Desktop)"
+		else
+            versionnumber=$(grep '"version"' steam_client_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Beta (Bazzite-Desktop)"
+        fi
+            echo "SteamClientType: Bazzite"
+        }
+
+	CachyClientCheck(){
+        if [ -f "steam_client_steamdeck_stable_ubuntu12.manifest" ]; then
+            versionnumber=$(grep '"version"' steam_client_steamdeck_stable_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Stable (CachyOS-Handheld)"
+        elif [ -f steam_client_steamdeck_publicbeta_ubuntu12.manifest ]; then
+            versionnumber=$(grep '"version"' steam_client_steamdeck_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Beta (CachyOS-Handheld)"
+		elif [ -f "steam_client_ubuntu12.manifest" ]; then
+            versionnumber=$(grep '"version"' steam_client_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Stable (CachyOS-Desktop)"
+		else
+            versionnumber=$(grep '"version"' steam_client_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Beta (CachyOS-Desktop)"
+        fi
+            echo "SteamClientType: CachyOS"
+        }
+
+    FlatpakClientCheck(){
+        if [ -f "steam_client_ubuntu12.manifest" ]; then
+            versionnumber=$(grep '"version"' steam_client_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Stable"
+        else
+            versionnumber=$(grep '"version"' steam_client_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Beta"
+        fi
+            echo "SteamClientType: Flatpak"
+        }
+
+    NativeClientCheck(){
+        if [ -f "steam_client_ubuntu12.manifest" ]; then
+            versionnumber=$(grep '"version"' steam_client_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Stable"
+        else
+            versionnumber=$(grep '"version"' steam_client_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Beta"
+        fi
+            echo "SteamClientType: Native"
+        }
+		
+	VoidClientCheck(){
+        if [ -f "steam_client_ubuntu12.manifest" ]; then
+            versionnumber=$(grep '"version"' steam_client_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Stable"
+        else
+            versionnumber=$(grep '"version"' steam_client_publicbeta_ubuntu12.manifest | awk -F'"' '{print $4}')
+            echo "SteamClientChannel: Beta"
+        fi
+            echo "SteamClientType: Void"
+        }
+		
+    CheckClientInfo(){
+        echo "SteamClientInfo:"
+        wheresteampackage
+        if steamoscheck; then
+            SteamOSClientCheck
+		elif bazzitecheck; then
+            BazziteClientCheck
+		elif cachyoscheck; then
+			CachyClientCheck
+		elif voidcheck; then
+			VoidClientCheck
+        elif flatpakcheck; then
+            FlatpakClientCheck
+        else
+            NativeClientCheck
+        fi
+            echo "SteamClientVersion: $versionnumber"
+            }
+    
+    CheckHeadcrabCompatibility(){
+            echo "=================================================="
+        CheckClientInfo
+        if [[ "$versionnumber" == "$HeadcrabCompatibleClientVer" ]]; then
+            echo "ClientCompatCheck: SteamClientVersion Compatible"
+            echo "================================================="
+            clientinstall
+        else
+            echo "ClientCompatCheck: SteamClientVersion Incompatible"
+            echo "=================================================="
+            echo "Bootstrapping Injector"
+            clientdowngrade
+        fi
+        }
+
+    preinstallchecks(){
+        InstallVoidDeps
+		InstallDebianDeps
+		InstallArchDeps
+        RemoveArchPkg
+        DisableSLSsteamPath
+        }
+
+    InstallDebianDeps() {	    
+	    if debiancheck; then
+
+		if apt-cache search --names-only '^libcurl4t64$' | grep -q "libcurl4t64"; then
+		    pkg_name="libcurl4t64"
+		else
+		    pkg_name="libcurl4"
+		fi
+		target_pkg="${pkg_name}:i386"
+
+		if dpkg -s "$target_pkg" >/dev/null 2>&1; then
+		    echo -e "$target_pkg already installed"
+		    return 0
+		fi
+
+		if ! dpkg --print-foreign-architectures | grep -q "i386"; then
+		    echo "Adding i386 architecture..."
+		    sudo dpkg --add-architecture i386
+		    sudo apt-get update >/dev/null 2>&1
+		fi
+
+		if sudo apt-get install -y "$target_pkg" >/dev/null 2>&1; then
+		    echo -e "$target_pkg installed successfully"
+		else
+		    echo -e "$target_pkg failed to install"
+		fi
+
+        fi
+	    }
+		
+		InstallVoidDeps(){
+        if voidcheck; then
+            if ! command -v xbps-install >/dev/null 2>&1; then
+                echo "Void Linux detected but xbps-install was not found in PATH"
+                return 1
+            fi
+
+            local pkg cmd install_cmd
+            local missing_pkgs=()
+            local missing_cmds=()
+
+            for pkg in wget curl grep gawk sed 7zip; do
+                case "$pkg" in
+                    gawk) cmd="awk" ;;
+                    7zip) cmd="7z" ;;
+                    *) cmd="$pkg" ;;
+                esac
+
+                if ! command -v "$cmd" >/dev/null 2>&1; then
+                    missing_pkgs+=("$pkg")
+                fi
+            done
+
+            if [ "${#missing_pkgs[@]}" -eq 0 ]; then
+                echo "Void dependencies already installed"
+                return 0
+            fi
+
+            if [ "$(id -u)" -eq 0 ]; then
+                install_cmd="xbps-install"
+            elif command -v sudo >/dev/null 2>&1; then
+                install_cmd="sudo xbps-install"
+            else
+                echo "Void dependencies missing: ${missing_pkgs[*]}"
+                echo "Install them with: xbps-install ${missing_pkgs[*]}"
+                echo "Re-run as root or install sudo for automatic dependency installation"
+                return 1
+            fi
+
+            echo "Installing missing Void dependencies: ${missing_pkgs[*]}"
+            if ! $install_cmd -y "${missing_pkgs[@]}"; then
+                echo "Failed to install Void dependencies: ${missing_pkgs[*]}"
+                return 1
+            fi
+
+            for pkg in wget curl grep gawk sed 7zip; do
+                case "$pkg" in
+                    gawk) cmd="awk" ;;
+                    7zip) cmd="7z" ;;
+                    *) cmd="$pkg" ;;
+                esac
+
+                if ! command -v "$cmd" >/dev/null 2>&1; then
+                    missing_cmds+=("$cmd")
+                fi
+            done
+
+            if [ "${#missing_cmds[@]}" -ne 0 ]; then
+                echo "Void dependencies still missing after install: ${missing_cmds[*]}"
+                return 1
+            fi
+
+            echo "Void dependencies installed successfully"
+        fi
+    }
+	
+	InstallArchDeps(){
+		if archcheck; then
+		 local packages=("wget" "curl" "grep" "awk" "sed" "7zip")
+	    local to_install=()
+	
+	    for pkg in "${packages[@]}"; do
+	        if ! pacman -Qs "$pkg" &>/dev/null; then
+	            to_install+=("$pkg")
+	        fi
+	    done
+	
+	    if [ ${#to_install[@]} -eq 0 ]; then
+	        echo "All required packages are already installed."
+	    else
+	        echo "Installing missing packages: ${to_install[*]}"
+	        sudo pacman -S "${to_install[@]}" --noconfirm
+	    fi
+		fi
+	}
+
+    RemoveArchPkg(){
+        if archcheck; then
+        installed_pkgs=$(pacman -Qq | grep -E '^slssteam(-git)?$' || true)
+        if [ -n "$installed_pkgs" ]; then
+            echo "Headcrab Will Transition To The Install To One That Can Seemlessly Update."
+			echo "This Will Replace The System Package Of SLSsteam With One That Is Local."
+            echo "Uninstalling Arch packages: $installed_pkgs"
+            sudo pacman -Rns --noconfirm $installed_pkgs
+        fi
+        fi
+    }
+
+    DisableSLSsteamPath(){
+        local local_target="$SLSsteamInstallDir/path/steam"
+        local flatpak_target="$FlatpakSLSsteamInstallDir/path/steam"
+        local acted=0
+
+        if [ -e "$flatpak_target" ]; then
+            echo "Found: $flatpak_target"
+            echo "Renaming $flatpak_target -> ${flatpak_target}.bak"
+            mv -- "$flatpak_target" "${flatpak_target}.bak"
+            acted=1
         fi
 
         if [ -e "$local_target" ]; then
