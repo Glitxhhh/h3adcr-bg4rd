@@ -182,8 +182,7 @@ set -eu
 		
     CheckClientInfo(){
         echo "SteamClientInfo:"
-        wheresteamcfg
-        cd package/
+        wheresteampackage
         if steamoscheck; then
             SteamOSClientCheck
 		elif bazzitecheck; then
@@ -377,8 +376,7 @@ set -eu
     }
 	
     TrashiteWatMani(){
-		wheresteamcfg
-		cd package/
+		wheresteampackage
 		if [ -f "steam_client_steamdeck_stable_ubuntu12.installed"]; then
 			echo "Headcrab Downloading Bazzite-Deck Client Manifest"
 			wget "$DeckClientManifest" &> /dev/null
@@ -390,8 +388,7 @@ set -eu
 		}
 
 	CachyWatMani(){
-		wheresteamcfg
-		cd package/
+		wheresteampackage
 		if [ -f "steam_client_steamdeck_stable_ubuntu12.installed" ]; then
 			echo "Headcrab Downloading CachyOS-Handheld Client Manifest"
 			wget "$DeckClientManifest" &> /dev/null
@@ -446,8 +443,7 @@ set -eu
         dlm(){
         download_dlm
         echo "Running Fetching Client Update Headcrab_dlm.."
-        wheresteamcfg
-        cd package/
+        wheresteampackage
         $Headcrab_Downgrader_Path/dlm --input-file sources.txt --max-concurrent 16
         echo "Headcrab_dlm Fetched Client Update"
         }
@@ -455,15 +451,14 @@ set -eu
     dgsc(){
         download_dgsc
         echo "Running Headcrab_dgsc.."
-        wheresteamcfg
-        cd package/
+        wheresteampackage
         $Headcrab_Downgrader_Path/dgsc --port 1666 --silent & sleep 1s "$@"
         }
         
     prepdowngrade(){
         wheresteamcfg
         rm package/*
-        cd package/
+        wheresteampackage
         wget "$Sources" &> /dev/null
         DownloadClientManifest
         dlm
@@ -536,6 +531,15 @@ set -eu
                cd $FlatpakSteamInstallDir/
         else
                 cd $SteamInstallDir/
+            fi
+                echo "" &> /dev/null
+            }
+			
+	wheresteampackage(){
+        if [ -d "$FlatpakSteamInstallDir" ]; then
+               cd $FlatpakSteamInstallDir/package
+        else
+                cd $SteamInstallDir/package
             fi
                 echo "" &> /dev/null
             }
