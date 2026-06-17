@@ -597,18 +597,33 @@
         conditioncheck
         }
 
+    # SLSsteam-Asgard: Glitxh's fork of SLSsteam (includes Windows port).
+    # Releases published at Forgejo below; falls back to upstream AceSLS on GitHub.
+    ASGARD_RELEASE_API="https://git.denuvovortex.ru/api/v1/repos/glitxh/SLSSteam-Asgard/releases/latest"
+    ASGARD_RELEASE_BASE="https://git.denuvovortex.ru/glitxh/SLSSteam-Asgard/releases"
+
     downloadSLSsteam(){
-            echo "Downloading Latest SLSsteam.."
+            echo "Downloading Latest SLSsteam (Asgard fork).."
             cd $SCRIPT_DIR/
             mkdir -p $SCRIPT_DIR/SLSsteam_Download
             cd SLSsteam_Download
+
+            local ASGARD_TAG=""
+            ASGARD_TAG=$(curl -sSL --connect-timeout 10 --max-time 20                 "$ASGARD_RELEASE_API" 2>/dev/null | grep -o '"tag_name":"[^"]*"' | head -1 | cut -d'"' -f4)
+            if [ -n "$ASGARD_TAG" ]; then
+                echo "Fetching Asgard release $ASGARD_TAG.."
+                if wget -q -O SLSsteam-Any.7z                     "$ASGARD_RELEASE_BASE/download/$ASGARD_TAG/SLSsteam-Any.7z" 2>/dev/null; then
+                    echo "SLSsteam (Asgard) Downloaded: $ASGARD_TAG"
+                    return 0
+                fi
+            fi
+
+            echo "Asgard release unavailable, falling back to upstream SLSsteam.."
             local TAG
-            TAG=$(curl -sSL --connect-timeout 15 --max-time 30 \
-                -o /dev/null -w "%{url_effective}" \
-                "https://github.com/AceSLS/SLSsteam/releases/latest" 2>/dev/null)
+            TAG=$(curl -sSL --connect-timeout 15 --max-time 30                 -o /dev/null -w "%{url_effective}"                 "https://github.com/AceSLS/SLSsteam/releases/latest" 2>/dev/null)
             TAG="${TAG##*/}"
-            wget -O SLSsteam-Any.7z \
-                "https://github.com/AceSLS/SLSsteam/releases/download/$TAG/SLSsteam-Any.7z" &> /dev/null
+            wget -O SLSsteam-Any.7z                 "https://github.com/AceSLS/SLSsteam/releases/download/$TAG/SLSsteam-Any.7z" &> /dev/null
+            echo "SLSsteam Downloaded (upstream): $TAG"
         }
     
     export_sls(){
