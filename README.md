@@ -2,7 +2,7 @@
 Headcrab is a rootless Steam client compatibility helper
 - **Requirements**: `wget`, `curl`, `grep`, `awk`, `sed`, `7zip`
 ## Features
-- Installs the latest SLSsteam release.
+- Installs the latest SLSsteam-Asgard release.
 - Overides Steam client updates to maintain compatibility with SLSsteam updates.
 - Rootless operation* *As Long as The Dependacies Are Met.*
 ## How it works
