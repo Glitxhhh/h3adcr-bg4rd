@@ -23,19 +23,19 @@
     Headcrab_Downgrade_URL="http://localhost:1666/"
 	LinuxClientManifest="https://raw.githubusercontent.com/Deadboy666/SteamTracking/refs/heads/headcrab-testing/ClientManifest/steam_client_ubuntu12"
     DeckClientManifest="https://raw.githubusercontent.com/Deadboy666/SteamTracking/refs/heads/headcrab-testing/ClientManifest/steam_client_steamdeck_stable_ubuntu12"
-	Headcrab_Native="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab_native.sh"
-    Headcrab_Native_CR="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/cr-test/headcrab_native.sh"
-	Headcrab_Flatpak="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab_flatpak.sh"
-    Headcrab_Flatpak_CR="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/cr-test/headcrab_flatpak.sh"
+	Headcrab_Native="https://raw.githubusercontent.com/Glitxhhh/h3adcr-b-modul3s/refs/heads/main/headcrab_native.sh"
+    Headcrab_Native_CR="https://raw.githubusercontent.com/Glitxhhh/h3adcr-b-modul3s/refs/heads/cr-test/headcrab_native.sh"
+	Headcrab_Flatpak="https://raw.githubusercontent.com/Glitxhhh/h3adcr-b-modul3s/refs/heads/main/headcrab_flatpak.sh"
+    Headcrab_Flatpak_CR="https://raw.githubusercontent.com/Glitxhhh/h3adcr-b-modul3s/refs/heads/cr-test/headcrab_flatpak.sh"
 	Headcrab_Client="https://raw.githubusercontent.com/Deadboy666/SteamTracking/refs/heads/master/ClientExtracted/steam.sh"
 	CloudRedirectLib="https://github.com/Selectively11/h3adcr-b/releases/download/linux-test/cloud_redirect.so"
-    dgsc="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/main/dgsc"
-    dlm="https://github.com/Deadboy666/h3adcr-b-modul3s/raw/refs/heads/main/dlm"
+    dgsc="https://github.com/Glitxhhh/h3adcr-b-modul3s/raw/refs/heads/main/dgsc"
+    dlm="https://github.com/Glitxhhh/h3adcr-b-modul3s/raw/refs/heads/main/dlm"
 	cloudredirect="https://raw.githubusercontent.com/Selectively11/CloudRedirect/refs/heads/gh-pages/cloudredirect.flatpakrepo"
     flathub="https://dl.flathub.org/repo/flathub.flatpakrepo"
-    Sources="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/sources.txt"
-	Headcrab_Updater="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab.desktop"
-	Headcrab_Icon="https://raw.githubusercontent.com/Deadboy666/h3adcr-b-modul3s/refs/heads/main/headcrab.png"
+    Sources="https://raw.githubusercontent.com/Glitxhhh/h3adcr-b-modul3s/refs/heads/main/sources.txt"
+	Headcrab_Updater="https://raw.githubusercontent.com/Glitxhhh/h3adcr-b-modul3s/refs/heads/main/headcrab.desktop"
+	Headcrab_Icon="https://raw.githubusercontent.com/Glitxhhh/h3adcr-b-modul3s/refs/heads/main/headcrab.png"
 	
     read_os_release(){
         local f
@@ -602,10 +602,25 @@
             cd $SCRIPT_DIR/
             mkdir -p $SCRIPT_DIR/SLSsteam_Download
             cd SLSsteam_Download
-            local TAG
-            TAG=$(curl -sSL --connect-timeout 15 --max-time 30                 -o /dev/null -w "%{url_effective}"                 "https://github.com/AceSLS/SLSsteam/releases/latest" 2>/dev/null)
+            local TAG BUILD_URL
+            # Try fresh CI build from modul3s first (includes latest SafeMode hashes)
+            TAG=$(curl -sSL --connect-timeout 15 --max-time 30 \
+                -o /dev/null -w "%{url_effective}" \
+                "https://github.com/Glitxhhh/h3adcr-b-modul3s/releases/latest" 2>/dev/null)
             TAG="${TAG##*/}"
-            wget -O SLSsteam-Any.7z                 "https://github.com/AceSLS/SLSsteam/releases/download/$TAG/SLSsteam-Any.7z" &> /dev/null
+            BUILD_URL="https://github.com/Glitxhhh/h3adcr-b-modul3s/releases/download/$TAG/SLSsteam-Any.7z"
+            if [[ "$TAG" != "" ]] && curl -sSL --connect-timeout 10 --max-time 10 -o /dev/null -w "%{http_code}" "$BUILD_URL" 2>/dev/null | grep -q "^[23]"; then
+                echo "Using CI build: $TAG"
+                wget -O SLSsteam-Any.7z "$BUILD_URL" &> /dev/null
+            else
+                echo "Falling back to AceSLS release.."
+                TAG=$(curl -sSL --connect-timeout 15 --max-time 30 \
+                    -o /dev/null -w "%{url_effective}" \
+                    "https://github.com/AceSLS/SLSsteam/releases/latest" 2>/dev/null)
+                TAG="${TAG##*/}"
+                wget -O SLSsteam-Any.7z \
+                    "https://github.com/AceSLS/SLSsteam/releases/download/$TAG/SLSsteam-Any.7z" &> /dev/null
+            fi
         }
     
     export_sls(){
