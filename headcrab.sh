@@ -228,7 +228,6 @@
 		InstallDebianDeps
 		InstallArchDeps
         RemoveArchPkg
-        DisableSLSsteamPath
         }
 
     InstallDebianDeps() {	    
