@@ -28,7 +28,7 @@
 	Headcrab_Flatpak="https://raw.githubusercontent.com/Glitxhhh/h3adcr-b-modul3s/refs/heads/main/headcrab_flatpak.sh"
     Headcrab_Flatpak_CR="https://raw.githubusercontent.com/Glitxhhh/h3adcr-b-modul3s/refs/heads/cr-test/headcrab_flatpak.sh"
 	Headcrab_Client="https://raw.githubusercontent.com/Deadboy666/SteamTracking/refs/heads/master/ClientExtracted/steam.sh"
-	CloudRedirectLib="https://github.com/Selectively11/h3adcr-b/releases/download/linux-test/cloud_redirect.so"
+	CloudRedirectLib="https://raw.githubusercontent.com/Glitxhhh/h3adcr-b-modul3s/refs/heads/main/cloudredirect/cloud_redirect.so"
     dgsc="https://github.com/Glitxhhh/h3adcr-b-modul3s/raw/refs/heads/main/dgsc"
     dlm="https://github.com/Glitxhhh/h3adcr-b-modul3s/raw/refs/heads/main/dlm"
 	cloudredirect="https://raw.githubusercontent.com/Selectively11/CloudRedirect/refs/heads/gh-pages/cloudredirect.flatpakrepo"
