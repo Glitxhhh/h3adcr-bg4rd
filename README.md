@@ -31,10 +31,10 @@ Headcrab is a rootless Steam client compatibility helper
  * Installing Headcrab
  
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Glitxhhh/h3adcr-b/refs/heads/main/headcrab.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Glitxhhh/h3adcr-bg4rd/refs/heads/main/headcrab.sh | bash
 ```
 
-- For Troubleshooting h3adcr-b* [View the Wiki](https://github.com/Deadboy666/h3adcr-bg4rd/wiki/Headcrab-Wiki)
+- For Troubleshooting h3adcr-b* [View the Wiki](https://github.com/Deadboy666/h3adcr-b/wiki/Headcrab-Wiki)
 
 
 
